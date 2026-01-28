@@ -1,0 +1,15 @@
+{
+  "appId": "com.example.hakimipomodoro",
+  "appName": "哈基米番茄钟",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "orientation": "portrait",
+  "bundledWebRuntime": false
+}

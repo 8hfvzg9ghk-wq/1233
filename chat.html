@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ff6b6b">
+    <link rel="icon" type="image/svg+xml" href="resources/android/icon.svg">
+    <title>双双哈基米AI聊天助手</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 双双哈基米风格背景 */
+        .shuangshuang-hakkimi-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 186, 234, 0.3) 0%, rgba(255, 186, 234, 0) 20%),
+                radial-gradient(circle at 90% 30%, rgba(201, 226, 255, 0.3) 0%, rgba(201, 226, 255, 0) 20%),
+                radial-gradient(circle at 30% 70%, rgba(255, 221, 192, 0.3) 0%, rgba(255, 221, 192, 0) 20%),
+                radial-gradient(circle at 70% 90%, rgba(221, 255, 212, 0.3) 0%, rgba(221, 255, 212, 0) 20%);
+            background-size: 100% 100%;
+            animation: bgFloat 15s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes bgFloat {
+            0%, 100% {
+                background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%;
+            }
+            25% {
+                background-position: 10% 10%, 90% 10%, 10% 90%, 90% 90%;
+            }
+            50% {
+                background-position: 20% 0%, 80% 20%, 0% 80%, 80% 100%;
+            }
+            75% {
+                background-position: 10% 90%, 90% 70%, 30% 10%, 70% 10%;
+            }
+        }
+
+        /* 哈基米装饰元素 */
+        .hakkimi-deco {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            animation: float 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        .deco-1 {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .deco-2 {
+            top: 20%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 1s;
+        }
+
+        .deco-3 {
+            bottom: 15%;
+            left: 20%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 2s;
+        }
+
+        .deco-4 {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        /* 聊天容器 */
+        .chat-container {
+            width: 90%;
+            max-width: 600px;
+            height: 80vh;
+            max-height: 700px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 聊天头部 */
+        .chat-header {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* 聊天内容区 */
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #e0e0e0;
+            border-radius: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #d0d0d0;
+        }
+
+        /* 消息样式 */
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-items: flex-end;
+            margin-left: auto;
+        }
+
+        .message.ai {
+            align-items: flex-start;
+            margin-right: auto;
+        }
+
+        .message-content {
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai .message-content {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            padding: 0 8px;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+            padding: 0 8px;
+        }
+
+        .speak-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 4px 12px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .speak-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .speak-btn:active {
+            transform: translateY(0);
+        }
+
+        .speak-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .speak-btn.playing {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        /* 输入区域 */
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #f0f0f0;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        #user-input:focus {
+            border-color: #667eea;
+        }
+
+        #send-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        #send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        #send-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .loading span {
+            width: 6px;
+            height: 6px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: loading 1.4s infinite ease-in-out both;
+        }
+
+        .loading span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .loading span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes loading {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .chat-container {
+                width: 100%;
+                height: 100vh;
+                max-height: none;
+                border-radius: 0;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .chat-header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 双双哈基米背景 -->
+    <div class="shuangshuang-hakkimi-bg"></div>
+    
+    <!-- 双双哈基米装饰元素 -->
+    <div class="hakkimi-deco deco-1"></div>
+    <div class="hakkimi-deco deco-2"></div>
+    <div class="hakkimi-deco deco-3"></div>
+    <div class="hakkimi-deco deco-4"></div>
+
+    <!-- 聊天窗口 -->
+    <div class="chat-container">
+        <div class="chat-header">
+            <button class="back-btn" onclick="window.location.href='pomodoro.html'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                </svg>
+            </button>
+            <h1>双双哈基米AI助手</h1>
+            <p>与AI进行有趣的对话吧～</p>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <!-- 初始欢迎消息 -->
+            <div class="message ai">
+                <div class="message-content">
+                    你好！我是可爱的双双哈基米AI助手，有什么可以帮助你的吗？😊
+                </div>
+                <div class="message-time">刚刚</div>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="输入你的问题..." autofocus>
+            <button id="send-btn" title="发送消息">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM元素
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        
+        // API配置 - 使用代理服务器
+        const API_URL = 'http://localhost:5000/api/chat';
+        // 移除API_KEY，因为它现在在服务器端使用
+        
+        // 发送消息函数
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            // 清空输入框
+            userInput.value = '';
+            
+            // 添加用户消息到聊天窗口
+            addMessageToChat('user', message);
+            
+            // 添加加载动画
+            const loadingElement = addLoadingIndicator();
+            
+            try {
+                // 调用代理服务器API
+                console.log('调用代理服务器API...');
+                
+                // 准备API请求数据 - 发送给代理服务器
+                const requestData = {
+                    message: message
+                };
+                
+                // 发送API请求到代理服务器
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                // 检查响应状态
+                if (!response.ok) {
+                    throw new Error(`代理服务器请求失败: ${response.status}`);
+                }
+                
+                // 解析响应数据
+                const data = await response.json();
+                const aiResponse = data.response;
+                
+                // 移除加载动画
+                removeLoadingIndicator(loadingElement);
+                
+                // 添加AI回复到聊天窗口
+                addMessageToChat('ai', aiResponse);
+            } catch (error) {
+                // 移除加载动画
+                removeLoadingIndicator(loadingElement);
+                
+                // 添加错误消息
+                const errorMessage = '无法连接大语言模型，休息一下吧！';
+                addMessageToChat('ai', errorMessage);
+                console.error('API请求错误:', error);
+            }
+        }
+        
+        // 添加消息到聊天窗口
+        function addMessageToChat(sender, content) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender}`;
+            
+            const contentElement = document.createElement('div');
+            contentElement.className = 'message-content';
+            contentElement.textContent = content;
+            
+            const timeElement = document.createElement('div');
+            timeElement.className = 'message-time';
+            timeElement.textContent = getCurrentTime();
+            
+            messageElement.appendChild(contentElement);
+            messageElement.appendChild(timeElement);
+            
+            // 为AI消息添加朗读按钮
+            if (sender === 'ai') {
+                const actionsElement = document.createElement('div');
+                actionsElement.className = 'message-actions';
+                
+                const speakBtn = document.createElement('button');
+                speakBtn.className = 'speak-btn';
+                speakBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    朗读
+                `;
+                speakBtn.onclick = () => speakText(content, speakBtn);
+                
+                actionsElement.appendChild(speakBtn);
+                messageElement.appendChild(actionsElement);
+            }
+            
+            chatMessages.appendChild(messageElement);
+            
+            // 滚动到底部
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // 添加加载指示器
+        function addLoadingIndicator() {
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'message ai';
+            loadingMessage.id = 'loading-message';
+            
+            const contentElement = document.createElement('div');
+            contentElement.className = 'message-content';
+            
+            const loading = document.createElement('div');
+            loading.className = 'loading';
+            loading.innerHTML = '<span></span><span></span><span></span>';
+            
+            contentElement.appendChild(loading);
+            loadingMessage.appendChild(contentElement);
+            
+            chatMessages.appendChild(loadingMessage);
+            
+            // 滚动到底部
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return loadingMessage;
+        }
+        
+        // 移除加载指示器
+        function removeLoadingIndicator(element) {
+            if (element && element.parentNode) {
+                element.parentNode.removeChild(element);
+            }
+        }
+        
+        // 获取当前时间
+        function getCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        }
+        
+        // 语音朗读功能
+        function speakText(text, button) {
+            if (!('speechSynthesis' in window)) {
+                alert('您的浏览器不支持语音合成功能');
+                return;
+            }
+            
+            const synthesis = window.speechSynthesis;
+            
+            if (synthesis.speaking) {
+                synthesis.cancel();
+                button.classList.remove('playing');
+                return;
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN';
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            
+            utterance.onstart = () => {
+                button.classList.add('playing');
+                button.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                    停止
+                `;
+            };
+            
+            utterance.onend = () => {
+                button.classList.remove('playing');
+                button.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    朗读
+                `;
+            };
+            
+            utterance.onerror = (event) => {
+                console.error('语音合成错误:', event.error);
+                button.classList.remove('playing');
+                button.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                    朗读
+                `;
+            };
+            
+            synthesis.speak(utterance);
+        }
+        
+        // 事件监听器
+        sendBtn.addEventListener('click', sendMessage);
+        
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // 平滑滚动效果
+        chatMessages.scrollTo = function(options) {
+            const start = this.scrollTop;
+            const end = typeof options === 'object' ? options.top : options;
+            const duration = 300;
+            const startTime = performance.now();
+            
+            function easeInOutQuad(t) {
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            }
+            
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeProgress = easeInOutQuad(progress);
+                
+                this.scrollTop = start + (end - start) * easeProgress;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate.bind(this));
+                }
+            }
+            
+            requestAnimationFrame(animate.bind(this));
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哈基米番茄钟</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 背景装饰 */
+        .bg-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .decoration {
+            position: absolute;
+            opacity: 0.5;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .decoration:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            width: 80px;
+            height: 80px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'/%3E%3Cline x1='9' y1='9' x2='9.01' y2='9'/%3E%3Cline x1='15' y1='9' x2='15.01' y2='9'/%3E%3C/svg%3E");
+        }
+        
+        .decoration:nth-child(2) {
+            bottom: 15%;
+            right: 8%;
+            width: 100px;
+            height: 100px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E");
+        }
+        
+        .decoration:nth-child(3) {
+            top: 40%;
+            right: 15%;
+            width: 60px;
+            height: 60px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/%3E%3C/svg%3E");
+        }
+        
+        /* 主容器 */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 90%;
+            display: flex;
+            gap: 30px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* 左侧番茄钟区域 */
+        .pomodoro-main {
+            flex: 1;
+            text-align: center;
+        }
+        
+        /* 右侧任务区域 */
+        .task-section {
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 标题 */
+        .title {
+            text-align: center;
+            color: #ff6b6b;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px rgba(255, 107, 107, 0.2);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        
+        /* 时钟显示 */
+        .timer {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .time-display {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            background: linear-gradient(45deg, #4ecdc4, #556270);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 3px 3px 0px rgba(78, 205, 196, 0.2);
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* 时间调节按钮 */
+        .time-adjust {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .adjust-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background-color: #4ecdc4;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .adjust-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(0, 0, 0, 0.15);
+        }
+        
+        .adjust-btn.decrease {
+            background-color: #ff6b6b;
+        }
+        
+        .adjust-btn.increase {
+            background-color: #4ecdc4;
+        }
+        
+        /* 模式选择 */
+        .modes {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .mode-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            max-width: 140px;
+        }
+        
+        .mode-btn.work {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        .mode-btn.work.active {
+            background-color: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .mode-btn.short-break {
+            background-color: #4ecdc4;
+            color: white;
+        }
+        
+        .mode-btn.short-break.active {
+            background-color: #3dbdb6;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+        }
+        
+        .mode-btn.long-break {
+            background-color: #45b7d1;
+            color: white;
+        }
+        
+        .mode-btn.long-break.active {
+            background-color: #34a8c4;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(69, 183, 209, 0.3);
+        }
+        
+        /* 控制按钮 */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .control-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .start-btn {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        .start-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+        
+        .reset-btn {
+            background-color: #f9f9f9;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .reset-btn:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 任务列表 */
+        .task-title {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .task-input {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .task-input input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px 0 0 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .task-input input:focus {
+            border-color: #ff6b6b;
+        }
+        
+        .add-task-btn {
+            padding: 12px 20px;
+            background-color: #4ecdc4;
+            color: white;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .add-task-btn:hover {
+            background-color: #3dbdb6;
+        }
+        
+        .task-list {
+            flex: 1;
+            min-height: 250px; /* 确保至少能显示5个任务 */
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .task-item:hover {
+            background-color: #f0f0f0;
+            transform: translateX(5px);
+        }
+        
+        .task-item input[type="checkbox"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4ecdc4;
+        }
+        
+        .task-item .task-text {
+            flex: 1;
+            font-size: 1rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .task-item .delete-btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .task-item .delete-btn:hover {
+            background-color: #ff5252;
+        }
+        
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        /* 动画效果 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .timer.running {
+            animation: pulse 2s infinite;
+        }
+        
+        /* 统计信息 */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 25px;
+                border-radius: 20px;
+                max-width: 500px;
+            }
+            
+            .task-section {
+                width: 100%;
+                margin-top: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .time-display {
+                font-size: 3.5rem;
+            }
+            
+            .mode-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .control-btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration">
+        <div class="decoration"></div>
+        <div class="decoration"></div>
+        <div class="decoration"></div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 左侧番茄钟主区域 -->
+        <div class="pomodoro-main">
+            <h1 class="title">🍅 哈基米番茄钟 🍅</h1>
+            
+            <!-- 时钟显示 -->
+            <div class="timer" id="timer">
+                <div class="time-display" id="timeDisplay">25:00</div>
+                <!-- 时间调节按钮 -->
+                <div class="time-adjust">
+                    <button class="adjust-btn decrease" id="decreaseTime" onclick="adjustTime(-5)">-5分钟</button>
+                    <button class="adjust-btn increase" id="increaseTime" onclick="adjustTime(5)">+5分钟</button>
+                </div>
+            </div>
+            
+            <!-- 模式选择 -->
+            <div class="modes">
+                <button class="mode-btn work active" data-mode="work">工作时间</button>
+                <button class="mode-btn short-break" data-mode="short-break">短休息</button>
+                <button class="mode-btn long-break" data-mode="long-break">长休息</button>
+            </div>
+            
+            <!-- 控制按钮 -->
+            <div class="controls">
+                <button class="control-btn start-btn" id="startBtn">开始</button>
+                <button class="control-btn reset-btn" id="resetBtn">重置</button>
+                <button class="control-btn" id="alarmBtn" style="background-color: #feca57; color: white;" onclick="window.location.href='alarm.html'">哈基米闹钟</button>
+                <button class="control-btn" id="countdownBtn" style="background-color: #54a0ff; color: white;" onclick="window.location.href='countdown.html'">倒计时</button>
+                <button class="control-btn" id="chatBtn" style="background-color: #9b59b6; color: white;" onclick="window.location.href='chat.html'">AI聊天助手</button>
+            </div>
+            
+            <!-- 统计信息 -->
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="completedPomodoro">0</div>
+                    <div class="stat-label">已完成番茄数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="completedTasks">0</div>
+                    <div class="stat-label">已完成任务</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧任务列表 -->
+        <div class="task-section">
+            <h2 class="task-title">今日任务 ✨</h2>
+            <div class="task-input">
+                <input type="text" id="taskInput" placeholder="添加新任务..." />
+                <button class="add-task-btn" id="addTaskBtn">➕</button>
+            </div>
+            <div class="task-list" id="taskList">
+                <!-- 任务项将在这里动态添加 -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 初始化变量
+        let timerInterval = null;
+        let isRunning = false;
+        let timeLeft = 25 * 60; // 默认25分钟
+        let mode = 'work';
+        let completedPomodoro = 0;
+        let completedTasks = 0;
+        
+        // 时间设置（支持自定义）
+        let TIMER_SETTINGS = {
+            work: 25 * 60,
+            'short-break': 5 * 60,
+            'long-break': 15 * 60
+        };
+        
+        // DOM元素
+        const timerElement = document.getElementById('timer');
+        const timeDisplayElement = document.getElementById('timeDisplay');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const modeBtns = document.querySelectorAll('.mode-btn');
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+        const completedPomodoroElement = document.getElementById('completedPomodoro');
+        const completedTasksElement = document.getElementById('completedTasks');
+        
+        // 更新显示时间
+        function updateTimeDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timeDisplayElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // 开始/暂停计时器
+        function toggleTimer() {
+            if (isRunning) {
+                // 暂停计时器
+                clearInterval(timerInterval);
+                startBtn.textContent = '继续';
+                timerElement.classList.remove('running');
+            } else {
+                // 开始计时器
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimeDisplay();
+                    
+                    // 时间到
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        timerComplete();
+                    }
+                }, 1000);
+                
+                startBtn.textContent = '暂停';
+                timerElement.classList.add('running');
+            }
+            isRunning = !isRunning;
+        }
+        
+        // 重置计时器
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            timeLeft = TIMER_SETTINGS[mode];
+            updateTimeDisplay();
+            startBtn.textContent = '开始';
+            timerElement.classList.remove('running');
+        }
+        
+        // 时间调节函数
+        function adjustTime(minutes) {
+            // 计算新的时间（秒）
+            const newTime = TIMER_SETTINGS[mode] + (minutes * 60);
+            
+            // 限制最小时间为5分钟，最大为60分钟
+            if (newTime >= 5 * 60 && newTime <= 60 * 60) {
+                TIMER_SETTINGS[mode] = newTime;
+                
+                // 如果当前模式就是调整的模式，且计时器未运行，则更新当前剩余时间
+                if (mode === document.querySelector('.mode-btn.active').dataset.mode && !isRunning) {
+                    timeLeft = newTime;
+                    updateTimeDisplay();
+                }
+            }
+        }
+        
+        // 切换模式
+        function changeMode(newMode) {
+            if (mode === newMode) return;
+            
+            // 更新活动按钮
+            modeBtns.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.mode === newMode) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            mode = newMode;
+            resetTimer();
+        }
+        
+        // 计时器完成
+        function timerComplete() {
+            isRunning = false;
+            startBtn.textContent = '开始';
+            timerElement.classList.remove('running');
+            
+            // 如果是工作模式完成，增加番茄计数
+            if (mode === 'work') {
+                completedPomodoro++;
+                completedPomodoroElement.textContent = completedPomodoro;
+                // 保存到本地存储
+                localStorage.setItem('completedPomodoro', completedPomodoro);
+            }
+            
+            // 显示通知
+            showNotification();
+        }
+        
+        // 显示通知
+        function showNotification() {
+            if (Notification.permission === 'granted') {
+                const notification = new Notification(
+                    mode === 'work' ? '🍅 工作时间结束！' : '✨ 休息时间结束！',
+                    {
+                        body: mode === 'work' ? '该休息一下了' : '开始新的工作吧',
+                        icon: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff6b6b"%3E%3Cpath d="M13 7h-2v5.41l3.79 3.8 1.42-1.42z"/%3E%3C/svg%3E'
+                    }
+                );
+                
+                notification.onclick = () => {
+                    window.focus();
+                    notification.close();
+                };
+            }
+        }
+        
+        // 添加任务
+        function addTask() {
+            const taskText = taskInput.value.trim();
+            if (taskText === '') return;
+            
+            const taskItem = document.createElement('div');
+            taskItem.className = 'task-item';
+            taskItem.innerHTML = `
+                <input type="checkbox" class="task-checkbox">
+                <span class="task-text">${taskText}</span>
+                <button class="delete-btn">✕</button>
+            `;
+            
+            // 添加事件监听
+            const checkbox = taskItem.querySelector('.task-checkbox');
+            checkbox.addEventListener('change', () => {
+                taskItem.classList.toggle('completed');
+                updateCompletedTasks();
+            });
+            
+            const deleteBtn = taskItem.querySelector('.delete-btn');
+            deleteBtn.addEventListener('click', () => {
+                taskItem.style.opacity = '0';
+                setTimeout(() => {
+                    taskList.removeChild(taskItem);
+                    updateCompletedTasks();
+                }, 300);
+            });
+            
+            taskList.appendChild(taskItem);
+            taskInput.value = '';
+            
+            // 保存任务到本地存储
+            saveTasks();
+        }
+        
+        // 更新完成的任务数
+        function updateCompletedTasks() {
+            const completedTaskCount = document.querySelectorAll('.task-item.completed').length;
+            completedTasksElement.textContent = completedTaskCount;
+            // 保存到本地存储
+            localStorage.setItem('completedTasks', completedTaskCount);
+        }
+        
+        // 保存任务到本地存储
+        function saveTasks() {
+            const tasks = [];
+            document.querySelectorAll('.task-item').forEach(item => {
+                tasks.push({
+                    text: item.querySelector('.task-text').textContent,
+                    completed: item.classList.contains('completed')
+                });
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+        
+        // 从本地存储加载任务
+        function loadTasks() {
+            const savedTasks = localStorage.getItem('tasks');
+            if (savedTasks) {
+                try {
+                    const tasks = JSON.parse(savedTasks);
+                    tasks.forEach(task => {
+                        const taskItem = document.createElement('div');
+                        taskItem.className = `task-item ${task.completed ? 'completed' : ''}`;
+                        taskItem.innerHTML = `
+                            <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                            <span class="task-text">${task.text}</span>
+                            <button class="delete-btn">✕</button>
+                        `;
+                        
+                        // 添加事件监听
+                        const checkbox = taskItem.querySelector('.task-checkbox');
+                        checkbox.addEventListener('change', () => {
+                            taskItem.classList.toggle('completed');
+                            updateCompletedTasks();
+                        });
+                        
+                        const deleteBtn = taskItem.querySelector('.delete-btn');
+                        deleteBtn.addEventListener('click', () => {
+                            taskItem.style.opacity = '0';
+                            setTimeout(() => {
+                                taskList.removeChild(taskItem);
+                                updateCompletedTasks();
+                            }, 300);
+                        });
+                        
+                        taskList.appendChild(taskItem);
+                    });
+                    updateCompletedTasks();
+                } catch (e) {
+                    console.error('加载任务失败:', e);
+                }
+            }
+        }
+        
+        // 从本地存储加载统计数据
+        function loadStats() {
+            const savedPomodoro = localStorage.getItem('completedPomodoro');
+            if (savedPomodoro) {
+                completedPomodoro = parseInt(savedPomodoro);
+                completedPomodoroElement.textContent = completedPomodoro;
+            }
+        }
+        
+        // 请求通知权限
+        function requestNotificationPermission() {
+            if ('Notification' in window) {
+                Notification.requestPermission();
+            }
+        }
+        
+        // 事件监听
+        startBtn.addEventListener('click', toggleTimer);
+        resetBtn.addEventListener('click', resetTimer);
+        
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                changeMode(btn.dataset.mode);
+            });
+        });
+        
+        addTaskBtn.addEventListener('click', addTask);
+        
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+        
+        // 初始化
+        function init() {
+            updateTimeDisplay();
+            requestNotificationPermission();
+            loadTasks();
+            loadStats();
+        }
+        
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

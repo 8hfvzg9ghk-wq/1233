@@ -1,0 +1,48 @@
+
+    <!DOCTYPE html>
+    <html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <title>生成PDF中...</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+            }
+            .container {
+                text-align: center;
+                padding: 40px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+            button {
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #4ecdc4;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            button:hover {
+                background-color: #3dbdb6;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>正在准备生成PDF用户手册</h2>
+            <p>请点击下方按钮在浏览器中打开转换页面</p>
+            <p>PDF文件将自动开始下载</p>
+            <button onclick="window.open('user_manual_pdf.html')">打开转换页面</button>
+            <button onclick="window.close()" style="background-color: #ff6b6b; margin-left: 10px;">关闭</button>
+        </div>
+    </body>
+    </html>

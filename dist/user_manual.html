@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双双哈基米番茄钟与闹钟 - 用户手册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+        
+        h2 {
+            color: #4ecdc4;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #4ecdc4;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #556270;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-bottom: 20px;
+            margin-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .feature-box {
+            background-color: #f9f9f9;
+            border-left: 4px solid #4ecdc4;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .interface-section {
+            margin-bottom: 30px;
+        }
+        
+        .screenshot {
+            background-color: #e9ecef;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid #dee2e6;
+        }
+        
+        .screenshot p {
+            font-style: italic;
+            color: #6c757d;
+            text-align: center;
+        }
+        
+        .button-description {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+        
+        .button-name {
+            font-weight: bold;
+            color: #ff6b6b;
+            min-width: 150px;
+        }
+        
+        .button-details {
+            flex: 1;
+        }
+        
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            margin: 40px 0;
+            border-radius: 3px;
+        }
+        
+        .note {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .tip {
+            background-color: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            margin: 20px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>双双哈基米番茄钟与闹钟 - 用户手册</h1>
+        
+        <div class="screenshot">
+            <p>欢迎使用双双哈基米风格的番茄钟与闹钟应用！本手册将帮助您了解并充分利用所有功能。</p>
+        </div>
+        
+        <h2>1. 产品简介</h2>
+        <p>双双哈基米番茄钟与闹钟是一款集时间管理与提醒功能于一体的Web应用，采用了可爱的双双哈基米风格设计，旨在帮助用户提高工作效率，养成良好的时间管理习惯。</p>
+        
+        <div class="feature-box">
+            <h3>主要功能亮点：</h3>
+            <ul>
+                <li><strong>番茄工作法</strong>：25分钟工作 + 5分钟短休息 + 15分钟长休息的经典时间管理模式</li>
+                <li><strong>任务管理</strong>：添加、完成和删除待办任务，追踪完成情况</li>
+                <li><strong>数据统计</strong>：记录已完成的番茄钟和任务数量</li>
+                <li><strong>闹钟功能</strong>：设置自定义闹钟，到点提醒</li>
+                <li><strong>本地存储</strong>：自动保存任务和统计数据，刷新页面不丢失</li>
+                <li><strong>响应式设计</strong>：支持在各种设备上使用</li>
+                <li><strong>可爱界面</strong>：采用双双哈基米风格设计，色彩鲜艳，动画丰富</li>
+                <li><strong>Android应用</strong>：支持安装为原生Android应用，提供更好的系统集成体验</li>
+                <li><strong>震动提醒</strong>：Android版本支持震动提醒功能</li>
+                <li><strong>开机自启动</strong>：Android版本支持开机自动启动，确保闹钟功能正常工作</li>
+            </ul>
+        </div>
+        
+        <div class="section-divider"></div>
+        
+        <h2>2. 番茄钟功能使用指南</h2>
+        
+        <h3>2.1 界面介绍</h3>
+        <div class="interface-section">
+            <p>番茄钟主界面包含以下几个主要部分：</p>
+            <ul>
+                <li><strong>标题区域</strong>：显示"🍅 双双哈基米番茄钟 🍅"标题</li>
+                <li><strong>时间显示</strong>：大字号显示当前倒计时时间</li>
+                <li><strong>模式选择</strong>：工作时间、短休息、长休息三种模式切换</li>
+                <li><strong>控制按钮</strong>：开始/暂停、重置、进入闹钟页面</li>
+                <li><strong>任务列表</strong>：添加和管理待办任务</li>
+                <li><strong>统计信息</strong>：显示已完成的番茄钟和任务数量</li>
+            </ul>
+        </div>
+        
+        <h3>2.2 使用方法</h3>
+        <ol>
+            <li><strong>选择工作模式</strong>：点击"工作时间"、"短休息"或"长休息"按钮选择所需模式</li>
+            <li><strong>开始计时</strong>：点击"开始"按钮启动计时器</li>
+            <li><strong>暂停/继续</strong>：计时器运行时，点击"暂停"按钮暂停，再次点击"继续"恢复</li>
+            <li><strong>重置计时器</strong>：点击"重置"按钮将计时器恢复到所选模式的初始时间</li>
+            <li><strong>切换到闹钟</strong>：点击"哈基米闹钟"按钮进入闹钟页面</li>
+        </ol>
+        
+        <h3>2.3 任务管理</h3>
+        <p>番茄钟集成了简单易用的任务管理功能：</p>
+        <ol>
+            <li><strong>添加任务</strong>：在输入框中输入任务内容，点击"➕"按钮或按Enter键添加</li>
+            <li><strong>完成任务</strong>：点击任务旁边的复选框标记任务为已完成</li>
+            <li><strong>删除任务</strong>：点击任务右侧的"✕"按钮删除任务</li>
+            <li><strong>查看进度</strong>：底部统计区域显示已完成任务数量</li>
+        </ol>
+        
+        <div class="tip">
+            <strong>提示：</strong>任务数据会自动保存到您的浏览器本地存储中，即使关闭或刷新页面，任务列表也不会丢失。
+        </div>
+        
+        <h3>2.4 按钮功能说明</h3>
+        <div class="button-description">
+            <div class="button-name">工作时间</div>
+            <div class="button-details">选择25分钟的工作模式，适合专注工作或学习。完成后会自动增加番茄钟计数。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">短休息</div>
+            <div class="button-details">选择5分钟的短休息模式，适合工作间隙的短暂放松。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">长休息</div>
+            <div class="button-details">选择15分钟的长休息模式，适合多个番茄钟后的较长时间休息。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">开始/暂停</div>
+            <div class="button-details">启动或暂停当前计时器。运行时显示"暂停"，暂停时显示"继续"。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">重置</div>
+            <div class="button-details">将计时器重置为当前模式的初始时间。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">双双哈基米闹钟</div>
+            <div class="button-details">跳转到闹钟功能页面，黄色按钮，带有醒目的视觉效果。</div>
+        </div>
+        
+        <div class="section-divider"></div>
+        
+        <h2>3. 闹钟功能使用指南</h2>
+        
+        <h3>3.1 界面介绍</h3>
+        <div class="interface-section">
+            <p>闹钟界面包含以下几个主要部分：</p>
+            <ul>
+                <li><strong>标题区域</strong>：显示"⏰ 双双哈基米闹钟 ⏰"标题</li>
+                <li><strong>当前时间</strong>：实时显示当前的系统时间（时:分:秒）</li>
+                <li><strong>闹钟设置</strong>：小时和分钟的下拉选择器</li>
+                <li><strong>控制按钮</strong>：设置闹钟、取消闹钟、返回番茄钟</li>
+                <li><strong>闹钟状态</strong>：显示当前设置的闹钟时间</li>
+            </ul>
+        </div>
+        
+        <h3>3.2 使用方法</h3>
+        <ol>
+            <li><strong>设置闹钟时间</strong>：通过下拉菜单选择小时和分钟</li>
+            <li><strong>确认设置</strong>：点击"设置闹钟"按钮保存闹钟设置</li>
+            <li><strong>查看闹钟状态</strong>：成功设置后，页面下方会显示当前设置的闹钟时间</li>
+            <li><strong>取消闹钟</strong>：点击"取消闹钟"按钮可以取消已设置的闹钟</li>
+            <li><strong>返回番茄钟</strong>：点击"返回番茄钟"按钮回到番茄钟页面</li>
+        </ol>
+        
+        <h3>3.3 闹钟触发</h3>
+        <p>当系统时间达到设定的闹钟时间时：</p>
+        <ul>
+            <li>页面背景会变为红色并闪烁</li>
+            <li>会播放双双哈基米风格的可爱音乐作为闹钟铃声提醒</li>
+            <li>如果已授权，会显示桌面通知</li>
+            <li>闹铃持续30秒后自动停止，可以点击双双哈基米图标提前停止</li>
+        </ul>
+        
+        <div class="note">
+            <strong>注意：</strong>为了接收桌面通知，请在首次使用时允许浏览器发送通知的请求。
+        </div>
+        
+        <h3>3.4 按钮功能说明</h3>
+        <div class="button-description">
+            <div class="button-name">设置闹钟</div>
+            <div class="button-details">保存当前选择的小时和分钟作为闹钟时间，成功后会显示提示信息。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">取消闹钟</div>
+            <div class="button-details">取消当前设置的闹钟，停止任何正在进行的响铃。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">返回番茄钟</div>
+            <div class="button-details">返回到番茄钟主页面，保持双双哈基米风格的黄色按钮设计。</div>
+        </div>
+        
+        <div class="section-divider"></div>
+        
+        <h2>4. 高级功能说明</h2>
+        
+        <h3>4.1 本地存储功能</h3>
+        <p>应用会自动将以下数据保存到浏览器的本地存储中：</p>
+        <ul>
+            <li>任务列表及其完成状态</li>
+            <li>已完成的番茄钟数量</li>
+            <li>已完成的任务数量</li>
+        </ul>
+        <p>这意味着即使您关闭浏览器或刷新页面，这些数据也不会丢失，下次打开应用时会自动恢复。</p>
+        
+        <h3>4.2 通知功能</h3>
+        <p>应用使用浏览器的通知API来发送提醒：</p>
+        <ul>
+            <li>番茄钟时间结束时发送通知</li>
+            <li>闹钟触发时发送通知</li>
+            <li>首次使用时会请求通知权限</li>
+        </ul>
+        
+        <div class="tip">
+            <strong>提示：</strong>如果您希望接收通知提醒，请确保在浏览器提示时选择"允许"。
+        </div>
+        
+        <h3>4.3 响应式设计</h3>
+        <p>应用采用响应式设计，能够自动适应不同屏幕尺寸：</p>
+        <ul>
+            <li>在桌面电脑上显示完整界面</li>
+            <li>在平板电脑上自动调整元素大小</li>
+            <li>在手机等小屏幕设备上优化布局，确保良好的使用体验</li>
+        </ul>
+        
+        <div class="section-divider"></div>
+        
+        <h2>5. 常见问题解答</h2>
+        
+        <h3>Q: 如何在不同设备间同步我的任务数据？</h3>
+        <p>A: 目前应用使用的是浏览器本地存储，数据仅保存在当前使用的设备和浏览器中。如果需要在多设备间同步，建议定期导出重要任务。</p>
+        
+        <h3>Q: 闹钟声音不响怎么办？</h3>
+        <p>A: 请检查以下几点：</p>
+        <ol>
+            <li>浏览器音量是否开启</li>
+            <li>设备系统音量是否开启</li>
+            <li>某些浏览器可能需要用户交互后才能播放声音，请确保在设置闹钟前已与页面有过交互</li>
+        </ol>
+        
+        <h3>Q: 如何清除所有数据重新开始？</h3>
+        <p>A: 您可以通过以下方式清除数据：</p>
+        <ol>
+            <li>删除所有任务（手动点击每个任务的删除按钮）</li>
+            <li>或者在浏览器开发者工具中清除本地存储数据</li>
+        </ol>
+        
+        <h3>Q: 应用可以离线使用吗？</h3>
+        <p>A: 是的，所有功能都可以在离线状态下使用，因为所有代码和数据都存储在本地。</p>
+        
+        <div class="section-divider"></div>
+        
+        <h2>6. 系统要求</h2>
+        
+        <h3>6.1 Web版本要求</h3>
+        <ul>
+            <li><strong>浏览器</strong>：推荐使用Chrome、Firefox、Safari、Edge等现代浏览器的最新版本</li>
+            <li><strong>网络</strong>：首次加载需要网络连接，之后可以离线使用</li>
+            <li><strong>权限</strong>：建议允许通知权限以获得更好的提醒体验</li>
+            <li><strong>设备</strong>：支持桌面电脑、平板电脑和智能手机</li>
+        </ul>
+        
+        <h3>6.2 Android版本要求</h3>
+        <ul>
+            <li><strong>系统版本</strong>：Android 7.0及以上版本</li>
+            <li><strong>存储空间</strong>：至少需要10MB可用空间</li>
+            <li><strong>权限</strong>：需要以下系统权限：
+                <ul>
+                    <li>互联网访问权限（用于数据同步）</li>
+                    <li>震动权限（用于提醒）</li>
+                    <li>开机自启动权限（确保闹钟功能正常工作）</li>
+                    <li>精确闹钟调度权限（确保闹钟准时触发）</li>
+                    <li>通知权限（显示提醒通知）</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <div class="tip">
+            <strong>提示：</strong>Android版本比Web版本提供更好的提醒体验，包括震动反馈和系统级通知，推荐优先使用。
+        </div>
+        
+        <div class="section-divider"></div>
+        
+        <h2>7. Android应用安装指南</h2>
+        
+        <h3>7.1 安装方法</h3>
+        <ol>
+            <li><strong>下载APK文件</strong>：从官方渠道下载最新版本的哈基米番茄钟APK文件</li>
+            <li><strong>允许安装未知来源应用</strong>：
+                <ul>
+                    <li>在Android设置中找到"安全"或"隐私"选项</li>
+                    <li>启用"允许安装来自未知来源的应用"选项</li>
+                    <li>部分设备可能需要为特定应用（如文件管理器）单独授权</li>
+                </ul>
+            </li>
+            <li><strong>安装应用</strong>：
+                <ul>
+                    <li>打开下载的APK文件</li>
+                    <li>点击"安装"按钮</li>
+                    <li>等待安装完成</li>
+                </ul>
+            </li>
+            <li><strong>首次启动</strong>：
+                <ul>
+                    <li>点击"打开"按钮启动应用</li>
+                    <li>授予应用请求的所有权限，以确保功能正常</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <div class="note">
+            <strong>注意：</strong>请确保从官方渠道下载APK文件，以避免安全风险。安装完成后，建议关闭"允许安装未知来源应用"的选项。
+        </div>
+        
+        <h3>7.2 Android专属功能</h3>
+        <div class="feature-box">
+            <h4>系统级提醒</h4>
+            <p>Android版本提供更强大的提醒功能：</p>
+            <ul>
+                <li><strong>震动提醒</strong>：番茄钟或闹钟时间到达时，设备会震动提示</li>
+                <li><strong>系统通知</strong>：即使应用在后台运行，也能收到醒目的系统通知</li>
+                <li><strong>开机自启动</strong>：确保设备重启后闹钟设置仍然有效</li>
+                <li><strong>精确闹钟</strong>：使用系统精确闹钟API，确保准时提醒</li>
+            </ul>
+        </div>
+        
+        <h3>7.3 权限说明</h3>
+        <div class="button-description">
+            <div class="button-name">互联网访问</div>
+            <div class="button-details">允许应用访问互联网，用于未来的数据同步功能。当前版本所有功能可离线使用。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">震动</div>
+            <div class="button-details">允许应用在番茄钟或闹钟时间到达时触发设备震动，提供触觉反馈。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">开机自启动</div>
+            <div class="button-details">允许应用在设备开机时自动启动，确保设置的闹钟在设备重启后仍然有效。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">精确闹钟调度</div>
+            <div class="button-details">允许应用使用系统的精确闹钟API，确保闹钟准时触发，不受系统省电策略影响。</div>
+        </div>
+        
+        <div class="button-description">
+            <div class="button-name">通知</div>
+            <div class="button-details">允许应用显示系统通知，用于提醒番茄钟或闹钟时间到达。</div>
+        </div>
+        
+        <h3>7.4 故障排除</h3>
+        <h4>闹钟不响</h4>
+        <ol>
+            <li>检查是否已授予所有必要权限</li>
+            <li>检查设备是否开启了勿扰模式</li>
+            <li>确保设备电量充足，避免进入深度睡眠模式</li>
+            <li>尝试重新设置闹钟或重启应用</li>
+        </ol>
+        
+        <h4>开机自启动不工作</h4>
+        <ol>
+            <li>检查设备是否有厂商定制的权限管理（如小米、华为等）</li>
+            <li>在设备的"自启动管理"或"应用管理"中手动允许应用自启动</li>
+            <li>关闭可能影响应用自启动的省电模式</li>
+        </ol>
+        
+        <div class="footer">
+            <p>© 2023 双双哈基米番茄钟与闹钟 - 让时间管理变得更有趣！</p>
+            <p>版本 2.1.0</p>
+            <p>新增双双哈基米音乐闹钟铃声功能</p>
+        </div>
+    </div>
+</body>
+</html>
