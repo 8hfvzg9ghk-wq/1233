@@ -2,13 +2,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import json
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)
 
+# 加载环境变量
+load_dotenv()
+
 # 智普API配置 - 使用新的官方API端点
 API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
-API_KEY = 'fe0f83b606ca4d3f9bc45b6a614bf542.HM73MZQm1vRkTA9C'
+API_KEY = os.environ.get('OPENAI_API_KEY', '')
 
 def test_api_direct():
     """直接测试API，获取详细响应"""

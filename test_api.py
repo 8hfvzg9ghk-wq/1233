@@ -1,9 +1,14 @@
 import requests
 import json
+import os
+from dotenv import load_dotenv
+
+# 加载环境变量
+load_dotenv()
 
 # 智普API配置 - 使用正确的OpenAI兼容格式
 API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
-API_KEY = 'fe0f83b606ca4d3f9bc45b6a614bf542.HM73MZQm1vRkTA9C'
+API_KEY = os.environ.get('OPENAI_API_KEY', '')
 
 def test_api():
     print("开始测试智普LLM API...")
